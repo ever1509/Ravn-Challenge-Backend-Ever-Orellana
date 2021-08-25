@@ -10,7 +10,7 @@ namespace Movies.Application.Common.Interfaces
         DbSet<Category> Categories { get; set; }
         DbSet<Movie> Movies { get; set; }
         DbSet<MovieRate> MovieRates { get; set; }
-
+        DbSet<RefreshToken> RefreshTokens { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     }

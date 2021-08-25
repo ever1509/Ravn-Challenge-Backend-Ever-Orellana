@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Movies.API.Installers;
 using Movies.Application;
+using Movies.Infrastructure;
 
 namespace Movies.API
 {
@@ -24,8 +26,10 @@ namespace Movies.API
                 options.AddPolicy("MoviesCatalog",
                     builder => builder.WithOrigins("https://localhost:44316"));
             });
-
+            services.InstallJwt(Configuration);
+            services.InstallSwagger();
             services.InstallMoviesApplication();
+            services.InstallMoviesInfrastructure(Configuration);
 
             services.AddControllers();
         }
@@ -42,7 +46,16 @@ namespace Movies.API
 
             app.UseRouting();
 
+            app.UseCors("MoviesCatalog");
+
             app.UseAuthorization();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/MoviesCatalog/swagger.json", "Movies Catalog");
+            });
 
             app.UseEndpoints(endpoints =>
             {
