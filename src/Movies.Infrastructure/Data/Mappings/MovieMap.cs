@@ -10,7 +10,7 @@ namespace Movies.Infrastructure.Data.Mappings
         {
             builder.HasKey(e => e.MovieId);
             builder.Property(e => e.Title).IsRequired().HasMaxLength(50);
-            builder.Property(e => e.OpeningText).IsRequired().HasMaxLength(2000);
+            builder.Property(e => e.Synopsis).IsRequired().HasMaxLength(2000);
             builder.Property(e => e.ReleaseDate).IsRequired().HasColumnType("datetime");
             builder.Property(e => e.CreatedDate).IsRequired().HasColumnType("datetime");
             builder.Property(e => e.Image).IsRequired();

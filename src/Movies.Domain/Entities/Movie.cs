@@ -11,7 +11,7 @@ namespace Movies.Domain.Entities
         }
         public int MovieId { get; set; }
         public string Title { get; set; }
-        public string OpeningText { get; set; }
+        public string Synopsis { get; set; }
         public DateTime ReleaseDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Image { get; set; }

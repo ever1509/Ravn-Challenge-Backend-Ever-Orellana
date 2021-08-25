@@ -189,7 +189,7 @@ namespace Movies.Infrastructure.Data.Migrations
                     MovieId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(maxLength: 50, nullable: false),
-                    OpeningText = table.Column<string>(maxLength: 2000, nullable: false),
+                    Synopsis = table.Column<string>(maxLength: 2000, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Image = table.Column<string>(nullable: false),
