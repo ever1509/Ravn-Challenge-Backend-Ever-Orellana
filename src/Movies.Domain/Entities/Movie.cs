@@ -13,6 +13,7 @@ namespace Movies.Domain.Entities
         public string Title { get; set; }
         public string OpeningText { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public string Image { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
