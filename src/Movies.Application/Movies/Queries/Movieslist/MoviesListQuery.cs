@@ -1,11 +1,12 @@
 ﻿using MediatR;
-using Movies.Application.Common.Models.Requests;
-using Movies.Application.Common.Models.Responses;
 
 namespace Movies.Application.Movies.Queries.Movieslist
 {
-    public class MoviesListQuery : PageRequest, IRequest<PagedResponse<MoviesListDto>>
+    public class MoviesListQuery :IRequest<MoviesListVm>
     {
-
+        public int Page { get; set; } = 1;
+        public int per_page { get; set; } = 4;
+        public int Category { get; set; }
+        public string Title { get; set; }
     }
 }

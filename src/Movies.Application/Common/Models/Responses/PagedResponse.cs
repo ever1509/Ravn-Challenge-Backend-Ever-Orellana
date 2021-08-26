@@ -1,11 +1,9 @@
-﻿using Movies.Application.Common.Mappings;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Movies.Application.Common.Models.Responses
 {
-    public class PagedResponse<T> : IMapFrom<PagedResponse<T>>
+    public class PagedResponse<T>
     {
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Application.Common.Models.Responses;
 using Movies.Application.Movies.Queries.Movieslist;
 using System.Threading.Tasks;
 
@@ -19,7 +18,7 @@ namespace Movies.API.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<PagedResponse<MoviesListDto>>> GetMoviesList([FromQuery] MoviesListQuery request) 
+        public async Task<ActionResult<MoviesListVm>> GetMoviesList([FromQuery] MoviesListQuery request) 
         {
             return Ok(await _mediator.Send(request));
         }
