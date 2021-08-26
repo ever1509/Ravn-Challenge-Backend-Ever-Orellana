@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Movies.Domain\Movies.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Movies\Commands\" />
-  </ItemGroup>
-
 </Project>
