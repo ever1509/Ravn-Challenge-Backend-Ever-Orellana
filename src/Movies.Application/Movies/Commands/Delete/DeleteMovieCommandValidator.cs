@@ -6,7 +6,7 @@ namespace Movies.Application.Movies.Commands.Delete
     {
         public DeleteMovieCommandValidator()
         {
-            RuleFor(e => e.MovieId).NotEmpty();            
+            RuleFor(e => e.Id).NotEmpty();            
         }
     }
 }

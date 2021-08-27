@@ -17,10 +17,10 @@ namespace Movies.Application.Movies.Commands.Delete
 
         public async Task<Unit> Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Movies.FindAsync(request.MovieId);
+            var entity = await _context.Movies.FindAsync(request.Id);
 
             if (entity == null)
-                throw new Exception($"Entity \"{nameof(Movies)}\" ({request.MovieId}) was not found.");
+                throw new Exception($"Entity \"{nameof(Movies)}\" ({request.Id}) was not found.");
 
             _context.Movies.Remove(entity);
 

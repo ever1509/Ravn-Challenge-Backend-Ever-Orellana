@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Movies.Application.MovieRates.Commands
+namespace Movies.Application.MovieRates.Commands.Create
 {
     public class AddMovieRateCommandHandler : IRequestHandler<AddMovieRateCommand, int>
     {
@@ -20,17 +20,16 @@ namespace Movies.Application.MovieRates.Commands
 
         public async Task<int> Handle(AddMovieRateCommand request, CancellationToken cancellationToken)
         {
-            request.UserId = _currentUserService.UserId;
-            var entity = _context.MovieRates.SingleOrDefault(x=>x.MovieId==request.MovieId && x.UserId == request.UserId);
+            var entity = _context.MovieRates.SingleOrDefault(x => x.MovieId == request.Id && x.UserID == _currentUserService.UserId);
 
-            if (entity == null)
-                throw new Exception($"Entity \"{nameof(MovieRate)}\" ({request.MovieId}) already exists.");
+            if (entity != null)
+                throw new Exception($"Entity \"{nameof(MovieRate)}\" ({request.Id}) already exists.");
 
 
             MovieRate movieRate = new MovieRate()
-            {               
-                UserId = request.UserId,
-                MovieId = request.MovieId,
+            {
+                UserID = _currentUserService.UserId,
+                MovieId = request.Id,
                 CreatedDate = DateTime.Now
             };
 
@@ -38,8 +37,7 @@ namespace Movies.Application.MovieRates.Commands
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity.MovieId;
-
+            return movieRate.MovieId;            
         }
     }
 }

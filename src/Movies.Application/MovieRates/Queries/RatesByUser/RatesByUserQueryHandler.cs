@@ -23,9 +23,10 @@ namespace Movies.Application.MovieRates.Queries.RatesByUser
             _mapper = mapper;
         }
 
+
         public async Task<List<RateDto>> Handle(RatesByUserQuery request, CancellationToken cancellationToken)
         {
-            return await _context.MovieRates.Where(x => x.UserId == _currentUserService.UserId)
+            return await _context.MovieRates.Where(x => x.UserID == _currentUserService.UserId)
                 .ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
         }
     }

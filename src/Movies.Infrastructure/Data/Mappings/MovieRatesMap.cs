@@ -8,7 +8,7 @@ namespace Movies.Infrastructure.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<MovieRate> builder)
         {
-            builder.HasKey(e => new { e.MovieId, e.UserId });
+            builder.HasKey(e => e.MovieRateId);
             builder.Property(e => e.CreatedDate).HasColumnType("datetime");
 
             builder.HasOne(e => e.Movie)

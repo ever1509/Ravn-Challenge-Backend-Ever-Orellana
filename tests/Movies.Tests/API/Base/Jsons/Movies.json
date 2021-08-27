@@ -1,0 +1,56 @@
+[
+  {
+    "MovieId": 1,
+    "Title": "John Wick",
+    "Synopsis": "John Wick loses his wife Helen to a terminal illness. Struggling to cope with her loss, he receives a beagle puppy named Daisy from her that she arranged to send before she died, to help him cope with his grief. Despite John's stoic demeanor, he bonds with the puppy and they spend their day driving around in his vintage 1969 Ford Mustang Boss 429. At a gas station, he encounters a trio of Russian gangsters whose leader Iosef insists on buying his car, which John refuses to sell. That evening the gangsters break into John's home, knock him unconscious, steal his car, and kill Daisy.",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/cdn.hobbyconsolas.com\/sites\/navi.axelspringer.es\/public\/styles\/1200\/public\/media\/image\/2021\/05\/john-wick-2339245.jpg?itok=xjuRi9i7",
+    "CategoryId": 1
+  },
+  {
+    "MovieId": 2,
+    "Title": "Star Wars Return of the Jedi",
+    "Synopsis": "It is the third and final film in the Star Wars original trilogy. Luke Skywalker and friends travel to Tatooine to rescue their friend Han Solo from the vile Jabba the Hutt. The Empire prepares to crush the Rebellion with a more powerful Death Star, while the Rebel fleet mounts a massive attack on the space station",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/static.wikia.nocookie.net\/starwars\/images\/b\/b2\/ReturnOfTheJediPoster1983.jpg\/revision\/latest?cb=20170926193831",
+    "CategoryId": 4
+  },
+  {
+    "MovieId": 3,
+    "Title": "Star Wars The Force Awakens",
+    "Synopsis": "Set thirty years after Return of the Jedi, The Force Awakens follows Rey, Finn, Poe Dameron, and Han Solo's search for Luke Skywalker and their fight in the Resistance, led by General Leia Organa and veterans of the Rebel Alliance, against Kylo Ren and the First Order, a successor to the Galactic Empire.",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/upload.wikimedia.org\/wikipedia\/en\/a\/a2\/Star_Wars_The_Force_Awakens_Theatrical_Poster.jpg",
+    "CategoryId": 4
+  },
+  {
+    "MovieId": 4,
+    "Title": "Star Wars The Last Jedi",
+    "Synopsis": "The Last Jedi follows Rey as she seeks the aid of Luke Skywalker, in hopes of turning the tide for the Resistance in the fight against Kylo Ren and the First Order, while General Leia Organa, Finn, and Poe Dameron attempt to escape a First Order attack on the dwindling Resistance fleet.",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/upload.wikimedia.org\/wikipedia\/en\/7\/7f\/Star_Wars_The_Last_Jedi.jpg",
+    "CategoryId": 4
+  },
+  {
+    "MovieId": 5,
+    "Title": "Avenger End Game",
+    "Synopsis": "Five years later, in 2023, Scott Lang escapes from the Quantum Realm.[N 2] Reaching the Avengers Compound, he explains that he experienced only five hours while trapped. Theorizing the Quantum Realm allows time travel, they ask Stark to help them retrieve the Stones from the past to reverse the actions of Thanos in the present. Stark, Rocket, and Banner, who has since merged his intelligence with the Hulk's strength, build a time machine. Banner notes that altering the past does not affect their present; any changes create alternate realities. Visiting the Asgardian refugees' settlement New Asgard, in Norway, Banner and Rocket recruit an overweight and despondent Thor. In Tokyo, Romanoff recruits Clint Barton, who has become a vigilante after the death of his family.",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/upload.wikimedia.org\/wikipedia\/en\/0\/0d\/Avengers_Endgame_poster.jpg",
+    "CategoryId": 1
+  },
+  {
+    "MovieId": 6,
+    "Title": "Zodiac",
+    "Synopsis": "One month later, the San Francisco Chronicle receives encrypted letters written by the killer calling himself the 'Zodiac, ' who threatens to kill a dozen people unless his coded message containing his identity is published. Political cartoonist Robert Graysmith, who correctly guesses that his identity is not in the message, is not taken seriously by crime reporter Paul Avery or the editors and is excluded from the initial details about the killings. When the newspaper publishes the letters, a married couple deciphers one. In September, the killer stabs law student Bryan Hartnell and Cecelia Shepard at Lake Berryessa in Napa County; Cecelia dies two days later. At the office, Avery makes fun of Graysmith before they discuss the coded letters. Graysmith interprets the letter, which Avery finds helpful, and he begins sharing information. One of Graysmith's insights about the letters is that the Zodiac's reference to man as 'the most dangerous animal of them all' is a reference to the film The Most Dangerous Gam,which features the villainous Count Zaroff, a man who hunts live human prey.",
+    "ReleaseDate": "2021-08-25T11:31:03.437",
+    "CreatedDate": "2021-08-25T11:31:03.437",
+    "Image": "https:\/\/upload.wikimedia.org\/wikipedia\/en\/3\/3a\/Zodiac2007Poster.jpg",
+    "CategoryId": 6
+  }
+]

@@ -20,28 +20,50 @@ namespace Movies.Infrastructure.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly JwtSettings _jwtSettings;
-        private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly IMoviesContext _context;
+        private readonly JwtSettings _jwtSettings;       
 
-        public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, JwtSettings jwtSettings, TokenValidationParameters tokenValidationParameters, IMoviesContext context)
+        public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, JwtSettings jwtSettings)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _jwtSettings = jwtSettings;
-            _tokenValidationParameters = tokenValidationParameters;
-            _context = context;
+            _jwtSettings = jwtSettings;           
         }
+
+        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User does not exist." }
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User/password combination is wrong" }
+                };
+            }
+
+            return await GenerateAuthenticationResultForUserAsync(user);
+        }
+
         public async Task<AuthenticationResult> RegisterAsync(string email, string password, UserRole? role)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
 
             if (existingUser != null)
             {
-                return new AuthenticationResult
+                return (new AuthenticationResult
                 {
                     Errors = new[] { "User with this email address already exists" }
-                };
+                });
             }
 
             var newUserId = Guid.NewGuid();
@@ -71,96 +93,20 @@ namespace Movies.Infrastructure.Identity
             return await GenerateAuthenticationResultForUserAsync(newUser);
         }
 
-        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+        public async Task<bool> DeleteUserAsync(string userId)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var isDeleted = false;
 
-            if (user == null)
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            if (user != null)
             {
-                return new AuthenticationResult
-                {
-                    Errors = new[] { "User does not exist." }
-                };
+                await _userManager.DeleteAsync(user);
+
+                isDeleted = true;
             }
 
-            var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
-
-            if (!userHasValidPassword)
-            {
-                return new AuthenticationResult
-                {
-                    Errors = new[] { "User/password combination is wrong" }
-                };
-            }
-
-            return await GenerateAuthenticationResultForUserAsync(user);
-        }
-
-        public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
-        {
-            var validatedToken = GetPrincipalFromToken(token);
-
-            if (validatedToken == null)
-            {
-                return new AuthenticationResult()
-                {
-                    Errors = new[] { "Invalid Token" }
-                };
-            }
-
-            var expiryDateUnix =
-                long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-
-            var expiryDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                .AddSeconds(expiryDateUnix);
-
-            if (expiryDateTimeUtc > DateTime.UtcNow)
-            {
-                return new AuthenticationResult()
-                {
-                    Errors = new[] { "This token hasn't expired yet" }
-                };
-            }
-            var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
-
-            var storeRefreshtoken = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshToken);
-
-            if (storeRefreshtoken == null)
-            {
-                return new AuthenticationResult
-                {
-                    Errors = new[] { "This refresh token doesn't exist" }
-                };
-            }
-
-            if (DateTime.UtcNow > storeRefreshtoken.ExpiryDate)
-            {
-                return new AuthenticationResult() { Errors = new[] { "This refresh token has expired" } };
-            }
-
-            if (storeRefreshtoken.Invalidated)
-            {
-                return new AuthenticationResult() { Errors = new[] { "This refresh token has been invalidated" } };
-            }
-
-            if (storeRefreshtoken.Used)
-            {
-                return new AuthenticationResult() { Errors = new[] { "This refresh token has been used" } };
-            }
-
-            if (storeRefreshtoken.JwtId != jti)
-            {
-                return new AuthenticationResult() { Errors = new[] { "This refresh token does not match this Jwt" } };
-
-            }
-
-            storeRefreshtoken.Used = true;
-            _context.RefreshTokens.Update(storeRefreshtoken);
-            await _context.SaveChangesAsync(new CancellationToken());
-
-            var user = await _userManager.FindByIdAsync(validatedToken.Claims.Single(x => x.Type == "id").Value);
-
-            return await GenerateAuthenticationResultForUserAsync(user);
+            return isDeleted;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -168,7 +114,7 @@ namespace Movies.Infrastructure.Identity
             var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
 
             return user.UserName;
-        }
+        }      
         private async Task<AuthenticationResult> GenerateAuthenticationResultForUserAsync(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -213,53 +159,24 @@ namespace Movies.Infrastructure.Identity
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var refreshToken = new RefreshToken()
-            {
-                JwtId = token.Id,
-                UserId = user.Id,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMonths(6),
+            //var refreshToken = new RefreshToken()
+            //{
+            //    JwtId = token.Id,
+            //    UserId = user.Id,
+            //    CreationDate = DateTime.UtcNow,
+            //    ExpiryDate = DateTime.UtcNow.AddMonths(6),
 
-            };
+            //};
 
-            await _context.RefreshTokens.AddAsync(refreshToken);
-            await _context.SaveChangesAsync(new CancellationToken());
+            //await _context.RefreshTokens.AddAsync(refreshToken);
+            //await _context.SaveChangesAsync();
 
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
+                Token = tokenHandler.WriteToken(token)
+                //RefreshToken = refreshToken.Token
             };
-        }
-
-        private ClaimsPrincipal GetPrincipalFromToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
-                var tokenValidationParameters = _tokenValidationParameters.Clone();
-                tokenValidationParameters.ValidateLifetime = false;
-                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validatedToken);
-
-                if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
-                {
-                    return null;
-                }
-
-                return principal;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
-        {
-            return (validatedToken is JwtSecurityToken jwtSecurityToken) &&
-                   jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                       StringComparison.InvariantCultureIgnoreCase);
         }
 
         private async Task AssignRoleToUser(UserRole role, ApplicationUser user)
@@ -273,6 +190,6 @@ namespace Movies.Infrastructure.Identity
                     await _userManager.AddToRoleAsync(user, "User");
                     break;
             }
-        }
+        }       
     }
 }

@@ -10,7 +10,7 @@ namespace Movies.API.Installers
     public static class JwtConfiguration
     {
         public static IServiceCollection InstallJwt(this IServiceCollection services,
-            IConfiguration configuration)
+           IConfiguration configuration)
         {
             //For Jwt Configuration And Authentication Configuration---------------------------------------------------------------
 

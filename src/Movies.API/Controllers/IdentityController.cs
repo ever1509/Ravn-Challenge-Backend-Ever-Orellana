@@ -7,7 +7,7 @@ using Movies.Application.Common.Models.Responses;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/identity/")]
+    [Route("api/identity")]
     [ApiController]
     public class IdentityController : ControllerBase
     {
@@ -65,26 +65,6 @@ namespace WebAPI.Controllers
                 Token = authResponse.Token,
                 RefreshToken = authResponse.RefreshToken
             });
-        }
-
-        [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
-        {
-            var authResponse = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
-
-            if (!authResponse.Success)
-            {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
-
-            return Ok(new AuthSuccessResponse
-            {
-                Token = authResponse.Token,
-                RefreshToken = authResponse.RefreshToken
-            });
-        }
+        }        
     }
 }

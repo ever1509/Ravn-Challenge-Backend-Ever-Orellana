@@ -1,0 +1,26 @@
+[
+  {
+    "CategoryId": 1,
+    "Description": "Action"
+  },
+  {
+    "CategoryId": 2,
+    "Description": "Comedies"
+  },
+  {
+    "CategoryId": 3,
+    "Description": "Dramas"
+  },
+  {
+    "CategoryId": 4,
+    "Description": "Science Fiction"
+  },
+  {
+    "CategoryId": 5,
+    "Description": "Romance"
+  },
+  {
+    "CategoryId": 6,
+    "Description": "Thriller"
+  }
+]

@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 
-namespace Movies.Application.MovieRates.Commands
+namespace Movies.Application.MovieRates.Commands.Create
 {
     public class AddMovieRateCommandValidator : AbstractValidator<AddMovieRateCommand>
     {
         public AddMovieRateCommandValidator()
         {
-            RuleFor(e => e.MovieId).NotEmpty();
+            RuleFor(e => e.Id).NotEmpty();
         }
     }
 }

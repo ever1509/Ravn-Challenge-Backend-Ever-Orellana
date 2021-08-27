@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Application.MovieRates.Commands;
+using Movies.Application.MovieRates.Commands.Create;
 using Movies.Application.MovieRates.Queries.RatesByUser;
 using Movies.Application.Movies.Commands.Create;
 using Movies.Application.Movies.Commands.Delete;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace Movies.API.Controllers
 {
     [Route("api/movies/")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [EnableCors("MoviesCatalog")]
     public class MoviesController : ControllerBase
@@ -26,13 +28,14 @@ namespace Movies.API.Controllers
         }
 
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<ActionResult<MoviesListVm>> GetMoviesList([FromQuery] MoviesListQuery request) 
         {
             return Ok(await _mediator.Send(request));
         }
 
         [HttpPost("create")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin,Test")]
         public async Task<ActionResult<int>> Create([FromBody] CreateMovieCommand command)
         {
             return Ok(await _mediator.Send(command));
@@ -48,19 +51,19 @@ namespace Movies.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("delete/{Id}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] DeleteMovieCommand request)
         {
-            await _mediator.Send(new DeleteMovieCommand { MovieId = id });
+            await _mediator.Send(request);
 
             return NoContent();
         }
 
-        [HttpPost("rate-movie")]
+        [HttpPost("rate/{Id}")]
         [Authorize]
-        public async Task<ActionResult<int>> AddLike([FromBody] AddMovieRateCommand command)
+        public async Task<ActionResult<int>> RateMovie([FromRoute] AddMovieRateCommand command)
         {
             var movieId = await _mediator.Send(command);
 
