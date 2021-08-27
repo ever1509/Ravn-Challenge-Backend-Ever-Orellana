@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.Application.Common.Models.Requests;
+using Movies.Application.Common.Models.Responses;
 using Movies.Application.MovieRates.Commands.Create;
 using Movies.Application.MovieRates.Queries.RatesByUser;
 using Movies.Application.Movies.Commands.Create;
 using Movies.Application.Movies.Commands.Delete;
 using Movies.Application.Movies.Commands.Update;
+using Movies.Application.Movies.Commands.UploadImage;
 using Movies.Application.Movies.Queries.Movieslist;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,6 +42,23 @@ namespace Movies.API.Controllers
         public async Task<ActionResult<int>> Create([FromBody] CreateMovieCommand command)
         {
             return Ok(await _mediator.Send(command));
+        }
+
+        [HttpPost("upload-image")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<MediaFileResponse>> UploadImageMovie([FromForm] MediaFileFormRequest request)
+        {
+
+            var movieFile = new MediaFileRequest()
+            {
+                FileName = request.File.FileName,
+                Folder = (string.IsNullOrEmpty(request.Folder)) ? "" : request.Folder,
+                ContentType = request.File.ContentType,
+                FileData = request.File.OpenReadStream()
+            };
+
+            return Ok(await _mediator.Send(new UploadImageMovieCommand { ImageMovieFileInfo = movieFile, MovieId= request.Id}));
         }
 
         [HttpPut("update")]
@@ -78,5 +98,12 @@ namespace Movies.API.Controllers
 
             return Ok(movieId);
         }
+    }
+
+    public class MediaFileFormRequest
+    {
+        public IFormFile File { get; set; }
+        public string Folder { get; set; }
+        public int Id { get; set; }
     }
 }

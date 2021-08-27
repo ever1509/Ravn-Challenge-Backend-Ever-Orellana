@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Movies.Application.Common.Interfaces;
+using Movies.Application.Common.Models;
 using Movies.Infrastructure.Data;
+using Movies.Infrastructure.File;
 using Movies.Infrastructure.Identity;
 
 namespace Movies.Infrastructure
@@ -26,6 +28,9 @@ namespace Movies.Infrastructure
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
+            services.AddScoped<IFileService, AzureFileService>();
 
             return services;
         }
