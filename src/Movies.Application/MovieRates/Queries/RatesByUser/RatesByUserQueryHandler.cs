@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Movies.Application.MovieRates.Queries.RatesByUser
 {
-    public class RatesByUserQueryHandler : IRequestHandler<RatesByUserQuery, List<RateDto>>
+    public class RatesByUserQueryHandler : IRequestHandler<RatesByUserQuery, List<UserDto>>
     {
         private readonly ICurrentUserService _currentUserService;
         private readonly IMoviesContext _context;
@@ -24,10 +24,21 @@ namespace Movies.Application.MovieRates.Queries.RatesByUser
         }
 
 
-        public async Task<List<RateDto>> Handle(RatesByUserQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserDto>> Handle(RatesByUserQuery request, CancellationToken cancellationToken)
         {
-            return await _context.MovieRates.Where(x => x.UserID == _currentUserService.UserId)
-                .ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+            var userDtoList = new List<UserDto>();
+            var userIds = await _context.MovieRates.Select(x => x.UserID).Distinct().ToArrayAsync();
+
+            foreach(var id in userIds)
+            {
+                var userDto = new UserDto();
+                var movies = await _context.MovieRates.Where(x => x.UserID == id).ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync();
+                userDto.UserId = id;
+                userDto.RatedMovies = movies;
+                userDtoList.Add(userDto);
+            }
+
+            return userDtoList;
         }
     }
 }

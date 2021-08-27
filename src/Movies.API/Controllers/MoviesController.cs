@@ -71,10 +71,10 @@ namespace Movies.API.Controllers
         }
 
         [HttpGet("rates-by-user")]
-        [Authorize]
-        public async Task<ActionResult<List<RateDto>>> GetRatesByUser([FromBody] RatesByUserQuery command)
+        [Authorize(Roles ="Admin")]
+        public async Task<ActionResult<List<RateDto>>> GetRatesByUser()
         {
-            var movieId = await _mediator.Send(command);
+            var movieId = await _mediator.Send(new RatesByUserQuery());
 
             return Ok(movieId);
         }
