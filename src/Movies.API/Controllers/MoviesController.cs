@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.API.Installers;
 using Movies.Application.Common.Models.Requests;
 using Movies.Application.Common.Models.Responses;
 using Movies.Application.MovieRates.Commands.Create;
@@ -38,7 +39,7 @@ namespace Movies.API.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize(Roles ="Admin,Test")]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<int>> Create([FromBody] CreateMovieCommand command)
         {
             return Ok(await _mediator.Send(command));
@@ -98,12 +99,5 @@ namespace Movies.API.Controllers
 
             return Ok(movieId);
         }
-    }
-
-    public class MediaFileFormRequest
-    {
-        public IFormFile File { get; set; }
-        public string Folder { get; set; }
-        public int Id { get; set; }
-    }
+    }    
 }
