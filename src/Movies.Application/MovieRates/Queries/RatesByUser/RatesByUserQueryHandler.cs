@@ -13,14 +13,14 @@ namespace Movies.Application.MovieRates.Queries.RatesByUser
 {
     public class RatesByUserQueryHandler : IRequestHandler<RatesByUserQuery, List<UserDto>>
     {
-        private readonly ICurrentUserService _currentUserService;
         private readonly IMoviesContext _context;
         private readonly IMapper _mapper;
-        public RatesByUserQueryHandler(ICurrentUserService currentUserService, IMoviesContext context, IMapper mapper)
-        {
-            _currentUserService = currentUserService;
+        private readonly IIdentityService _identityService;
+        public RatesByUserQueryHandler(IMoviesContext context, IMapper mapper, IIdentityService identityService)
+        {            
             _context = context;
             _mapper = mapper;
+            _identityService = identityService;
         }
 
 
@@ -32,9 +32,8 @@ namespace Movies.Application.MovieRates.Queries.RatesByUser
             foreach(var id in userIds)
             {
                 var userDto = new UserDto();
-                var movies = await _context.MovieRates.Where(x => x.UserID == id).ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync();
-                userDto.UserId = id;
-                userDto.RatedMovies = movies;
+                userDto.UserName = await _identityService.GetUserNameAsync(id);
+                userDto.RatedMovies = await _context.MovieRates.Where(x => x.UserID == id).ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync();
                 userDtoList.Add(userDto);
             }
 
