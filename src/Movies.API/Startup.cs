@@ -25,7 +25,7 @@ namespace Movies.API
             {
                 options.AddPolicy("MoviesCatalog",
                     builder => builder.WithOrigins("https://localhost:44316"));
-            });
+            });                       
             services.InstallJwt(Configuration);
             services.InstallSwagger();
             services.InstallMoviesApplication();
