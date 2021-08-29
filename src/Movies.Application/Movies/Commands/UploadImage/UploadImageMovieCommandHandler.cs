@@ -25,7 +25,7 @@ namespace Movies.Application.Movies.Commands.UploadImage
             if (movie == null)
                 throw new Exception($"Not found Movie {request.MovieId}");
            
-            var response = await _fileService.UploadFile(request.ImageMovieFileInfo, true);
+            var response = await _fileService.UploadFile(request.ImageMovieFileInfo);
 
             movie.Image = response.UploadUri;
             await _context.SaveChangesAsync(cancellationToken);

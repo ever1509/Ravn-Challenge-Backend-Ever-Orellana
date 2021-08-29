@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 namespace Movies.Application.Common.Interfaces
 {
     public interface IFileService
-    {
-        Task<UploadCompleteResponse> UploadFileBySas(MediaFileRequest data);
-        Task<UploadCompleteResponse> UploadFile(MediaFileRequest fileRequestDto, bool menuContainer);
-        Task<string> GetSelfSignedSignature();
+    {      
+        Task<UploadCompleteResponse> UploadFile(MediaFileRequest fileRequestDto);     
         Task<byte[]> DownloadFile(string name);
     }
 }

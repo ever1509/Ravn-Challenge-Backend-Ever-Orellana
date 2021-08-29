@@ -24,37 +24,8 @@ namespace Movies.Infrastructure.File
             _storageAccount = CloudStorageAccount.Parse(_azureSettings.Value.ConnectionString);
             _logger = logger;
         }
-
-        public async Task<UploadCompleteResponse> UploadFileBySas(MediaFileRequest data)
-        {
-
-            var blobClient = _storageAccount.CreateCloudBlobClient();
-            var container = await GetContainerReferenceAsync(blobClient);
-            var fileName = GetFileName(data);
-            var blobReference = container.GetBlockBlobReference(fileName);
-            var token = blobReference.GetSharedAccessSignature(GetDefaultPolicy());
-
-            var uploadUrl = string.Concat(blobReference.Uri, token);
-            return new UploadCompleteResponse()
-            {
-                ContentType = data.ContentType,
-                UploadUri = uploadUrl,
-                SavedUri = blobReference.Uri.AbsoluteUri,
-                Container = "Azure",
-                GenerateName = fileName,
-                FileSize = null
-            };
-        }
-
-        public async Task<string> GetSelfSignedSignature()
-        {
-            var blobClient = _storageAccount.CreateCloudBlobClient();
-            var container = await GetContainerReferenceAsync(blobClient);
-
-            var token = container.GetSharedAccessSignature(GetDefaultPolicy());
-            return token;
-        }
-        public async Task<UploadCompleteResponse> UploadFile(MediaFileRequest data, bool menuContainer)
+        
+        public async Task<UploadCompleteResponse> UploadFile(MediaFileRequest data)
         {
             _logger.LogInformation("Begining upload to Azure for file {filename} with size {size}", data.FileName, data.FileData.Length);
 
@@ -66,10 +37,7 @@ namespace Movies.Infrastructure.File
                 dataStream.Seek(0, SeekOrigin.Begin);
 
                 CloudBlobContainer container;
-                if (menuContainer)
-                    container = await GetMenuContainerReferenceAsync(blobClient);
-                else
-                    container = await GetContainerReferenceAsync(blobClient);
+                container = await GetContainerReferenceAsync(blobClient);
 
                 var fileName = GetFileName(data);
                 var blobReference = container.GetBlockBlobReference(fileName);
@@ -92,18 +60,11 @@ namespace Movies.Infrastructure.File
 
         private async Task<CloudBlobContainer> GetContainerReferenceAsync(CloudBlobClient blobClient)
         {
-            var container = blobClient.GetContainerReference(_azureSettings.Value.BlobContainer);
+            var container = blobClient.GetContainerReference(_azureSettings.Value.MoviesContainer);
             await container.CreateIfNotExistsAsync().ConfigureAwait(false);
             return container;
         }
-
-        private async Task<CloudBlobContainer> GetMenuContainerReferenceAsync(CloudBlobClient blobClient)
-        {
-            var container = blobClient.GetContainerReference(_azureSettings.Value.MenuBlobContainer);
-            await container.CreateIfNotExistsAsync().ConfigureAwait(false);
-            return container;
-        }
-
+       
         private string GetFileName(MediaFileRequest data)
         {
 
@@ -112,12 +73,6 @@ namespace Movies.Infrastructure.File
 
             if (!string.IsNullOrEmpty(data.Folder)) filename = Path.Combine(data.Folder, filename).ToLower();
             return filename;
-        }
-
-        private SharedAccessBlobPolicy GetDefaultPolicy()
-        {
-            var expiryTime = DateTimeOffset.UtcNow.AddSeconds(_azureSettings.Value.MaxExpiryTimeSeconds);
-            return new SharedAccessBlobPolicy() { Permissions = SharedAccessBlobPermissions.Read | SharedAccessBlobPermissions.Write | SharedAccessBlobPermissions.Create, SharedAccessExpiryTime = expiryTime };
         }
 
         public async Task<byte[]> DownloadFile(string name)
