@@ -34,7 +34,20 @@ This project is an API to manage Movies Catalog.
  3. To run the API you can move to the project Movies.API with PowerShell with administration privilegies and then execute the following command:
       1) **_dotnet run_**
     
- All of the change above are an alternative way because you can see the API deployed here https://moviescatalog-api.azurewebsites.net/swagger/
+ You can see all of the functionality of the API deployed here https://moviescatalog-api.azurewebsites.net/swagger/
+ 
+## Users added in the API   ##
+**Admin**
+
+    Username: apiadmin@test.com
+    Password: Tester@01
+
+**Regular User**
+
+    Username: user1@test.com
+    Password: Tester@01
+    
  
  Here are screenshots with all the functionalities of the API:
-    _Example:_
+    _First View of the API:_
+![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/master/movies-screenshots/First.PNG?raw=true)
