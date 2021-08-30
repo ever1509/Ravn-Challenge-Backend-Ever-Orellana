@@ -76,4 +76,6 @@ This project is an API to manage Movies Catalog.
    _Deleted movie who only admin has access:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/DeletedMovie.PNG?raw=true)
 
+   _Uploaded image movie who only admin has access:_ <br/>
+![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/UploadedMovie.PNG?raw=true)
 
