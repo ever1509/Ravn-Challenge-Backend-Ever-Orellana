@@ -32,7 +32,8 @@ namespace Movies.Application.MovieRates.Queries.RatesByUser
             foreach(var id in userIds)
             {
                 var userDto = new UserDto();
-                userDto.UserName = await _identityService.GetUserNameAsync(id);
+                var user = await _identityService.GetUserNameAsync(id);
+                userDto.UserName = user;
                 userDto.RatedMovies = await _context.MovieRates.Where(x => x.UserID == id).ProjectTo<RateDto>(_mapper.ConfigurationProvider).ToListAsync();
                 userDtoList.Add(userDto);
             }

@@ -111,7 +111,8 @@ namespace Movies.Infrastructure.Identity
 
         public async Task<string> GetUserNameAsync(string userId)
         {
-            var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            if(user==null) return null;
 
             return user.UserName;
         }      
