@@ -53,27 +53,29 @@ This project is an API to manage Movies Catalog.
     _First View of the API:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/First.PNG?raw=true)
 
-    _Get all movies catalog without authentication:_ <br/>
+   _Get all movies catalog without authentication:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/GetAllMovies.PNG?raw=true)
     _Login to the API with using the Admin user:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/AdminLogin.PNG?raw=true)
 
-    _Authenticate in the API with the Admin user token provided:_ <br/>
+   _Authenticate in the API with the Admin user token provided:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/AdminAuthenticate.PNG?raw=true)
 
-    _Rate movie with authenticated user:_ <br/>
+   _Rate movie with authenticated user:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/RateMovie.PNG?raw=true)
 
-    _Rates by user who only admin has access:_ <br/>
+   _Rates by user who only admin has access:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/RatesByUser.PNG?raw=true)
 
-    _Created movie who only admin has access:_ <br/>
+   _Created movie who only admin has access:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/CreatedMovie.PNG?raw=true)
 
-    _Updated movie who only admin has access:_ <br/>
+   _Updated movie who only admin has access:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/UpdatedMovie.PNG?raw=true)
 
-    _Updated movie who only admin has access:_ <br/>
+   _Deleted movie who only admin has access:_ <br/>
 ![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/DeletedMovie.PNG?raw=true)
 
+   _Uploaded image movie who only admin has access:_ <br/>
+![alt text](https://github.com/ever1509/Ravn-Challenge-Backend-Ever-Orellana/blob/main/movies-screenshots/UploadedMovie.PNG?raw=true)
 
