@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Movies.API.Installers;
 using Movies.Application;
+using Movies.Application.Common.Interfaces;
 using Movies.Application.Common.Models;
 using Movies.Infrastructure;
 using Movies.Infrastructure.Data;
@@ -48,7 +49,7 @@ namespace Movies.API
 
             app.UseHttpsRedirection();
 
-            //db.Database.Migrate();
+            db.Database.Migrate();
 
             app.UseRouting();
 
