@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Movies.Application.Common.Interfaces;
 using Movies.Application.Common.Models.Responses;
 using System;
@@ -16,47 +17,57 @@ namespace Movies.Application.Movies.Queries.Movieslist
     {
         private readonly IMoviesContext _context;
         public IMapper _mapper;
-        public MoviesListQueryHandler(IMoviesContext context, IMapper mapper)
+        private readonly IMemoryCache _memoryCache;
+        public MoviesListQueryHandler(IMoviesContext context, IMapper mapper, IMemoryCache memoryCache)
         {
             _context = context;
             _mapper = mapper;
-        }        
+            _memoryCache = memoryCache;
+        }
 
         public async Task<MoviesListVm> Handle(MoviesListQuery request, CancellationToken cancellationToken)
         {
+            var cacheKey = $"allmovies-{request.Category}-{request.Title}-{request.Page}-{request.per_page}";            
             var response = new MoviesListVm();
-            List<MovieDto> movies;           
 
-            if (request.Category > 0 && !(string.IsNullOrEmpty(request.Title)))
+            if (!_memoryCache.TryGetValue(cacheKey, out response))
             {
-                movies = await _context.Movies.Where(x => x.CategoryId == request.Category && x.Title.Contains(request.Title))
-                                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)                                 
-                                 .ToListAsync(cancellationToken);               
-            }
-            else if (request.Category == 0 && !(string.IsNullOrEmpty(request.Title)))
-            {
-                movies = await _context.Movies.Where(x=>x.Title.Contains(request.Title))
-                                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)                                 
-                                 .ToListAsync(cancellationToken);
-            }
-            else if (request.Category > 0 && string.IsNullOrEmpty(request.Title))
-            {
-                movies = await _context.Movies.Where(x => x.CategoryId == request.Category)
-                                 .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
-                                 .ToListAsync(cancellationToken);
-            }
-            else
-            {
-                movies = await _context.Movies.ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
-                                 .ToListAsync(cancellationToken);
+                List<MovieDto> movies;
+
+                if (request.Category > 0 && !(string.IsNullOrEmpty(request.Title)))
+                {
+                    movies = await _context.Movies.Where(x => x.CategoryId == request.Category && x.Title.Contains(request.Title))
+                                     .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                                     .ToListAsync(cancellationToken);
+                }
+                else if (request.Category == 0 && !(string.IsNullOrEmpty(request.Title)))
+                {
+                    movies = await _context.Movies.Where(x => x.Title.Contains(request.Title))
+                                     .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                                     .ToListAsync(cancellationToken);
+                }
+                else if (request.Category > 0 && string.IsNullOrEmpty(request.Title))
+                {
+                    movies = await _context.Movies.Where(x => x.CategoryId == request.Category)
+                                     .ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                                     .ToListAsync(cancellationToken);
+                }
+                else
+                {
+                    movies = await _context.Movies.ProjectTo<MovieDto>(_mapper.ConfigurationProvider)
+                                     .ToListAsync(cancellationToken);
+                }
+
+                PagedResponse<MovieDto> pagedMovies = BuildPagination(movies, request.Page, request.per_page);
+                var moviesListVm = new MoviesListVm { Movies = pagedMovies };
+
+                _memoryCache.Set(cacheKey, moviesListVm, new MemoryCacheEntryOptions { AbsoluteExpiration = DateTime.Now.AddHours(6), Priority = CacheItemPriority.Normal, SlidingExpiration = TimeSpan.FromMinutes(5) });
+
+                return moviesListVm;
             }
 
-            PagedResponse<MovieDto> pagedMovies = BuildPagination(movies, request.Page, request.per_page);
-
-            return new MoviesListVm()
-            {
-                Movies = pagedMovies
-            };
+            return response;
+               
         }
 
         private PagedResponse<MovieDto> BuildPagination(List<MovieDto> movies, int? page, int? pageSize)

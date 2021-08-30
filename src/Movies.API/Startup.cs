@@ -31,8 +31,7 @@ namespace Movies.API
                     builder => builder.WithOrigins("https://localhost:44316"));
             });                       
             services.InstallJwt(Configuration);
-            services.InstallSwagger();
-            services.Configure<CacheSettings>(Configuration.GetSection("CacheSettings"));
+            services.InstallSwagger();            
             services.InstallMoviesApplication();
             services.InstallMoviesInfrastructure(Configuration);
 

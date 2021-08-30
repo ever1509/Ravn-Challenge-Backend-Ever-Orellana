@@ -6,15 +6,9 @@ using System;
 
 namespace Movies.Application.Movies.Commands.UploadImage
 {
-    public class UploadImageMovieCommand:IRequest<MediaFileResponse>, ICacheable
+    public class UploadImageMovieCommand:IRequest<MediaFileResponse>
     {
         public MediaFileRequest ImageMovieFileInfo { get; set; }
-        public int MovieId { get; set; }
-
-        public bool UseCache => false;
-
-        public string CacheKey => string.Empty;
-
-        public TimeSpan? SlidingExpiration => null;
+        public int MovieId { get; set; }       
     }
 }
