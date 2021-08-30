@@ -54,8 +54,7 @@ namespace Movies.API.Controllers
             {
                 var movieFile = new MediaFileRequest()
                 {
-                    FileName = request.File.FileName,
-                    Folder = string.Empty,
+                    FileName = request.File.FileName,                    
                     ContentType = request.File.ContentType,
                     FileData = request.File.OpenReadStream()
                 };

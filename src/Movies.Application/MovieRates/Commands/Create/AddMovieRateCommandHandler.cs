@@ -23,7 +23,7 @@ namespace Movies.Application.MovieRates.Commands.Create
             var entity = _context.MovieRates.SingleOrDefault(x => x.MovieId == request.Id && x.UserID == _currentUserService.UserId);
 
             if (entity != null)
-                throw new Exception($"Entity \"{nameof(MovieRate)}\" ({request.Id}) already exists.");
+                throw new Exception($"You cannot be rate more than one time");
 
 
             MovieRate movieRate = new MovieRate()
