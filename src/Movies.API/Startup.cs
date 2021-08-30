@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Movies.API.Installers;
 using Movies.Application;
+using Movies.Application.Common.Models;
 using Movies.Infrastructure;
 using Movies.Infrastructure.Data;
 
@@ -30,6 +31,7 @@ namespace Movies.API
             });                       
             services.InstallJwt(Configuration);
             services.InstallSwagger();
+            services.Configure<CacheSettings>(Configuration.GetSection("CacheSettings"));
             services.InstallMoviesApplication();
             services.InstallMoviesInfrastructure(Configuration);
 
