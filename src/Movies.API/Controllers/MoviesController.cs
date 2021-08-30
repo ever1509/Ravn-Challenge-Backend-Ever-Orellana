@@ -50,16 +50,20 @@ namespace Movies.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MediaFileResponse>> UploadImageMovie([FromForm] MediaFileFormRequest request)
         {
-
-            var movieFile = new MediaFileRequest()
+            if (request.File != null)
             {
-                FileName = request.File.FileName,
-                Folder = (string.IsNullOrEmpty(request.Folder)) ? "" : request.Folder,
-                ContentType = request.File.ContentType,
-                FileData = request.File.OpenReadStream()
-            };
+                var movieFile = new MediaFileRequest()
+                {
+                    FileName = request.File.FileName,
+                    Folder = (string.IsNullOrEmpty(request.Folder)) ? "" : request.Folder,
+                    ContentType = request.File.ContentType,
+                    FileData = request.File.OpenReadStream()
+                };
 
-            return Ok(await _mediator.Send(new UploadImageMovieCommand { ImageMovieFileInfo = movieFile, MovieId= request.Id}));
+                return Ok(await _mediator.Send(new UploadImageMovieCommand { ImageMovieFileInfo = movieFile, MovieId = request.Id }));
+            }
+
+            return BadRequest();
         }
 
         [HttpPut("update")]
