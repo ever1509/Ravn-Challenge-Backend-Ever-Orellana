@@ -23,7 +23,7 @@ This project is an API to manage Movies Catalog.
     -Azure in the deployment.
     -FLuentAssertions in the Integration Tests
     -Ef Migrations.
-    -Caching using Caching Behavior of MediatR.
+    -In-Memory Cache library.
  
  # Environment Deployed in Azure
  
