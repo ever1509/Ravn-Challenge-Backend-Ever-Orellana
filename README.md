@@ -24,8 +24,14 @@ This project is an API to manage Movies Catalog.
     -FLuentAssertions in the Integration Tests
     -Ef Migrations.
     -Caching using Caching Behavior of MediatR.
-    
- # Setup
+ 
+ # Environment Deployed in Azure
+ 
+ You can see all of the functionality of the API deployed here https://moviescatalog-api.azurewebsites.net/swagger/
+ 
+ # Setup Locally
+ 
+ #### (First Way) Using dotnet commands: 
  1. Clone the repository
  2. Database Migrations:
     All the migration database are already added to Azure Sql Server using Database migration and the project is pointed properly in the connection but if you want to verify
@@ -33,9 +39,23 @@ This project is an API to manage Movies Catalog.
       - Move to the root folder ot the project, and execute the following command:
             - **_dotnet ef database update --project src\Movies.Infrastructure\ --startup-project src\Movies.API_**
  3. To run the API you can move to the project Movies.API with PowerShell with administration privilegies and then execute the following command:
-      1) **_dotnet run_**
+      **_dotnet run_**
+ 4. Now you can see the API in this URL: https://localhost:5001/swagger/
+   
+ 
+ #### (Another way) You can run the API with Docker:
+ 
+ 1. After you cloned the repository, also, you can run the API using docker. You can do it in a local environment typing the following commands:	
+ 
+    **_docker build -f .\src\Movies.API\Dockerfile -t moviesapi ._**
     
- You can see all of the functionality of the API deployed here https://moviescatalog-api.azurewebsites.net/swagger/
+ 2. Then you have run the container built with docker locally with the following command:
+ 
+    **_docker run -it -p 80:80 -d moviesapi_**
+    
+ 3. When all the compilation is completed you can see the docker container in a local way using this URL: http://localhost:80/swagger/
+ 
+    
  
 ## Users added in the API   ##
 **Admin**
