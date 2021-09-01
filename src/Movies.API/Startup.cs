@@ -10,6 +10,8 @@ using Movies.Application.Common.Interfaces;
 using Movies.Application.Common.Models;
 using Movies.Infrastructure;
 using Movies.Infrastructure.Data;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Movies.API
 {
@@ -35,7 +37,10 @@ namespace Movies.API
             services.InstallMoviesApplication();
             services.InstallMoviesInfrastructure(Configuration);
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options=> {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +53,7 @@ namespace Movies.API
 
             app.UseHttpsRedirection();
 
-            db.Database.Migrate();
+            //db.Database.Migrate();
 
             app.UseRouting();
 

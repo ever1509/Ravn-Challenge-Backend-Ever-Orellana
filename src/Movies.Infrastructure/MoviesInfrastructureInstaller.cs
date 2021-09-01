@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Movies.Application.Common.Interfaces;
 using Movies.Application.Common.Models;
+using Movies.Infrastructure.Cache;
 using Movies.Infrastructure.Data;
 using Movies.Infrastructure.File;
 using Movies.Infrastructure.Identity;
@@ -31,6 +32,14 @@ namespace Movies.Infrastructure
 
             services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
             services.AddScoped<IFileService, AzureFileService>();
+
+            //Redis Cache Config
+            var configSection = configuration.GetSection(nameof(RedisCacheSettings));
+            var redisSettings = configSection.Get<RedisCacheSettings>();
+            services.AddSingleton(redisSettings);
+            services.Configure<RedisCacheSettings>(configSection);
+            services.AddStackExchangeRedisCache(options => { options.Configuration = redisSettings.ConnectionString; });
+            services.AddSingleton<ICacheService, CacheService>();
 
             return services;
         }
