@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movies.API.Filter;
 using Movies.API.Installers;
 using Movies.Application.Common.Models.Requests;
 using Movies.Application.Common.Models.Responses;
@@ -14,6 +15,7 @@ using Movies.Application.Movies.Commands.Delete;
 using Movies.Application.Movies.Commands.Update;
 using Movies.Application.Movies.Commands.UploadImage;
 using Movies.Application.Movies.Queries.Movieslist;
+using Movies.Application.Movies.Queries.RemoveCache;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -33,6 +35,7 @@ namespace Movies.API.Controllers
 
         [HttpGet("all")]
         [AllowAnonymous]
+        [MemoryCache]
         public async Task<ActionResult<MoviesListVm>> GetMoviesList([FromQuery] MoviesListQuery request) 
         {
             return Ok(await _mediator.Send(request));
@@ -99,6 +102,15 @@ namespace Movies.API.Controllers
         public async Task<ActionResult<List<RateDto>>> GetRatesByUser()
         {
             var movieId = await _mediator.Send(new RatesByUserQuery());
+
+            return Ok(movieId);
+        }
+
+        [HttpGet("remove-cache")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<RateDto>>> RemoveMoviesRedisCache()
+        {
+            var movieId = await _mediator.Send(new RemoveMoviesCacheQuery());
 
             return Ok(movieId);
         }
