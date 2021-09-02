@@ -53,7 +53,7 @@ namespace Movies.API
 
             app.UseHttpsRedirection();
 
-            //db.Database.Migrate();
+            db.Database.Migrate();
 
             app.UseRouting();
 
